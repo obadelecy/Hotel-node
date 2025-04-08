@@ -12,7 +12,7 @@ router.get("/", verificarUsuAutenticado, function (req, res) {
     res.render("pages/index", req.session.autenticado);
 });
 
-router.get("/login", function (req, res) {
+router.get("/login", function(req, res) {
     res.render("pages/login", { listaErros: null });
 });
 
@@ -29,7 +29,7 @@ router.get("/cadastro", function (req, res) {
 });
 
 router.post("/cadastro",
-    usuarioController.regrasValidacaoFormCad,
+    usuarioController.validacaoFormularioCadastro,
     async function (req, res) {
         usuarioController.cadastrar(req, res);
 });

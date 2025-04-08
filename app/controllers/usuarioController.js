@@ -1,5 +1,8 @@
 const usuarioModel = require('../models/usuarioModel')
+const moment = require("moment");
 const {body, validationResult} = require('express-validator')
+const bcrypt = require("bcryptjs");
+var salt = bcrypt.genSaltSync(12);
 
 const usuarioController = {
     
@@ -24,7 +27,30 @@ const usuarioController = {
         })
     ],
 
+    regrasValidacaoFormLogin: [
+        body("nome")
+            .isLength({ min: 4, max: 45 })
+            .withMessage("O nome de usuário/e-mail deve ter de 8 a 45 caracteres"),
+        body("senha")
+            .isStrongPassword()
+            .withMessage("A senha deve ter no mínimo 8 caracteres (mínimo 1 letra maiúscula, 1 caractere especial e 1 número)")
+    ],
+
+
     //Métodos
+
+    logar: (req, res) => {
+        const erros = validationResult(req);
+        if (!erros.isEmpty()) {
+            console.log(erros)
+            return res.render("pages/login", { listaErros: erros })
+        }
+        if (req.session.autenticado != null) {
+            res.redirect("/perfil");
+        } else {
+            res.render("pages/login", { listaErros: erros })
+        }
+    },
 
     inserirUsuario: async (req, res) => {
 

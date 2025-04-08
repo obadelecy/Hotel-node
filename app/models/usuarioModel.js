@@ -17,6 +17,19 @@ const usuarioModel = {
 
     },
 
+    findUserEmail: async (camposForm) => {
+        try {
+            const [resultados] = await pool.query(
+                "SELECT * FROM usuario WHERE user_usuario = ? or email_usuario = ?",
+                [camposForm.user_usuario, camposForm.user_usuario]
+            )
+            return resultados;
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
+
     create: async (dadosFormulario) => {
         try {
             const [resultados] = await pool.query("INSERT INTO `usuario` "
